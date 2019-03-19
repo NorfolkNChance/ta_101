@@ -5,8 +5,6 @@ Process:
 This can take several forms, from an unsolicited resume to a formal application based on a job post to a conversation with a valued former coworker.  
 
 
-
-
 ### Be prompt
 No matter what kind of contact you're making, once somebody is waiting for your response you should make it a priority to respond promptly.  A quick no is kinder than a drawn-out maybe.  In particular, don't put off the no-thank-you responses because they are unpleasant:  dawdling on a likely candidate is risky for us, dawdling on somebody where the answer is quite clear is just rude.
 
@@ -67,7 +65,19 @@ If the problem is serious then archive the card and issue the same polite no-tha
 
 The next task is to try to be sure how well their CV, their experience and their portfolio really map onto what we are looking for.  
 
-> We're still evolving a policy about this for tech art.  What follows are notes
+#### Code tests
+> these are notes at the moment
+
+
+##### Python
+
+We can distribute the tests as unit tests, with the tests already written and the functions stubbed 
+
+1. Fold 'math' q's into regular tests:
+    a. vector basics becomes 'create an algorithm to place pole vectors on the plane of this arm'  
+    b. dot product becomes 'get the angle between these two vectors'
+    c. matrix question becomes 'write a function that aims this transform at another without using constraints'
+    d. 'copy the UV projection from this triangle to that triangle'
 
 #### Code samples
 Github repos or similar code samples are an excellent places to get a sense of someone's technological scope. They only a sample of someone's range, so don't fixate on what the code _does_ or whether it's directly relevant to our job (if it is, that's great; if not that's not a ding). It's also important to pay attention to what kind of repo you're looking at -- we don't want to judge based on personal scratchpads, only on projects that reflect serious effort.
@@ -147,7 +157,7 @@ By the end of the call you should have a pretty good idea if this candidate shou
 * If we (not 'I') decide to take this to the next step, we'll arrange to bring you into the office for an interview.
 * Typically an interview loop looks like this:
     [interview process description here; currently in flux]
-* **If the conversation went well**,  make that clear and let the candidate know that you're excited about the possibility things will get to the next step.  Although we shouldn't _promise_ an interview it's good to communicate to a good candidate that we _really hope_ there will be an interview. You want to communicate that enthusiasm in case they find other prospects while we're deciding what to do about the interview loop. 
+* **If the conversation went well**,  make that clear and let the candidate know that you're excited about the possibility things will get to the next step.  Although we shouldn't _promise_ an interview it's useful to communicate to a good candidate that we _really hope_ there will be an interview. You want to communicate that enthusiasm in case they find other prospects while we're deciding what to do about the interview loop. 
 * Always conclude by thanking them for their time and interest in Undead Labs.  End every call, even ones you no will not result in an interview, on a polite and friendly note.
 
 
@@ -173,21 +183,33 @@ There are some things we always want to know:
 * Can they think on their feet? 
 * Do they give evidence of a savvy development mindset? 
  
-But most candidates will also have some specific question marks:  
+But most candidates will also have some specific question marks left over from the screen:  
 * Are X's Python programming skills sufficient to the scale of the job we will be setting before them?  
 * How much did Y contribute to that relevant system on their resume?  
 * What was the special magic behind that impressive item on the demo reel (and is it really their work)?   
 
 It would be a good idea for the screener to be present in the interview to make sure any lingering questions from the screen are addressed.  If that's impossible, make sure to hand the resolution of those questions off to somebody who will be in the interview.  Ideally do this in person rather than via email -- subjective questions about people are very hard to put well in email or slack.
 
+The overall goal of the pre-interview meeting is to make sure that all the interviewers (in- and out-of-discipline) have a clear idea of the position we're trying to fill and the qualities that we think will make for success.  If the hire has unusual conditions or constraints ("This job absolutely requires mastery of .....") or ("This job could swing either senior or junior, because....") this is the place to lay them out. Try to lay out the considerations that will come into play in choosing between multiple qualified people as well as the go/no-go conditions for the job as a whole.  
+
+If this interview is one of a series for the same position, remind the interview team to consider each candidate in isolation _first_:  the time for comparisons is when the interviews are all done.  After all, we don't have a guarantee that the "best" candidate will actually be available, so we don't want to give other candidates less than excellent interviews because we don't expect them to "win."  
+
 # Step Five : Interview 
 
-[TBD]
+[this section needs is TBD: the essence, though, is similar what you do in screening -- look for information, don't try to trip people up, and try to form an idea of the candidate's profile that can be investigated with followup questions.  TA is working on a set of common questions for the discipline as a whole and detailed questions for sub-disciplines -- these are in a separate doc.  The 
 
 # Step 6: Wrapup
 Once the interviews are complete, all the interviewers need to answer the survey and write up their feedback. Do this on your own -- we don't want people comparing notes until everyone has gotten their thoughts laid out in isolation.  
 
 If the balance of responses is mostly negative, the hiring manager should just do a quick sanity check to make sure there are no biases at play and then get ready to close out the contact with the applicant.
 
-If the balance is mostly or overwhelmingly positive, get the interviewers together to compare notes. The first order question is to turn a vague majority sentiment into a clear yes or no (again, there is no 'maybe').  The second order problem is to identify any issues the hiring manager will need to resolve -- tweaking the role so that the relationship starts out on the right foot, resolving expectations around things we do here, or addressing personal concerns like company policies that weren't resolved in the interview.
+If the balance is mostly or overwhelmingly positive, get the interviewers together to compare notes. The first order question is to turn a vague majority sentiment into a clear yes or no (again, there is no 'maybe').  The second order problem is to identify any issues the hiring manager will need to resolve -- tweaking the role so that the relationship starts out on the right foot, resolving expectations around things we do here, or addressing personal concerns like company policies that weren't resolved in the interview.  The goal is to produce a clear recommendation for Phil or HR to use in generating an offer conversation.  
+
+In any case, pro or con, it's very valuable to involve the interview team in creating this recommendation -- they will help to disseminate the reasons behind the decision, which will make for smoother onboarding if the hire works out.
+
+If this is one of a series of interviews for the same position, it's important to make sure that we reserve _comparative_ judgements between candidates until the series is done:  we want to make sure that the interview treats each candidate in isolation for purposes of finding _possible_ fits.  Once all the data is in the hiring manager should see if there's an obvious consensus; if so, then bundle that up for a recommendation.  If there's not a clear consensus, get the interview team together to compare notes and look for patterns.  Hiring managers get the last say in subjective and hunch-based decisions, but it's important to make sure that multiple perspectives are aired so that we don't miss something.  Hopefully the discussions from the pre-interview setup will make it easier to answer these questions. 
+
+One last note: don't compromise.  If a hire does not feel right, don't do it -- it's easier to find a good candidate than it is to deal with a bad hire.  This can be painful in the short term but it's healthier in the long run. "Let's stay in touch" is also a valid recommendation -- if you have a candidate who's not quite ready but has potential, it's worth investing in a relationship that is not a hire so that you can reach out again in a few years. Out-of-work contacts, help with networking, and even steering people towards openings elsewhere if we don't have jobs for them are important ways to build good will and help the Lab create a network of friends in the industry. This is extra work but it's worth it, particularly with younger people who have a lot of potential even if they don't fit our needs at the moment
+
+
 
