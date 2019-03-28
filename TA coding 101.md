@@ -35,6 +35,7 @@ When working on runtime code, we need to be sure to:
 * **Use profiling data** to make sure you're optimizing the right things
 * Make sure we **understand the memory costs** of our work
 
+<a id="frameworks"></a>
 ### Frameworks
 
 This is code that's intended to solve a general problem in a repeatable way.  It could be a library for reading and writing a particular file type, or a system for adding metadata to an import pipeline.  Out-of-house examples would be something like the `xmltree` module or `django`, which will be specialized by other users to solve concrete problems.
@@ -52,6 +53,7 @@ Famework code needs to:
 
 Framework code is going to be deep down in the foundational layers of code that users see. Because it's not close to users it can't make assumptions on their behalves. Framework code should resist the temptation to make guesses about what users want: just fail loudly and let code closer to the user decide what to do next.
 
+<a id="libraries"></a>
 ### Libraries
 
 This is the largest category of TA code -- the place where most of the problem / solution work is actually done.  Library code is re-usable code that's specific to particular problem set:  dealing with UV sets in Maya, or providing debug info in Unreal.  Like framework code, libraries are basically invisible to end users: the customers for libraries are fellow coders.
@@ -77,6 +79,7 @@ Library code resembles framework code in one way: it's still far away from the u
 
 Good libraries are easy to spot: they make it easy to do the right thing and hard to do the wrong thing.  [This talk](https://youtu.be/5tg1ONG18H8) is nominally about C++, but it's a good discussion of the ways api design and UX design are similar in any language.  Libraries should be designed for simplicity, consistency and lack of surprises.
 
+<a id="tools"></a>
 ### Tools
 
 Tools are the parts of our work that are visible to our users -- this is where the menus, buttons, dialogs and scripts go.  Tool code marshals the functionality from our frameworks and libraries into a user-friendly package that's easy to maintain and support.  
@@ -260,23 +263,34 @@ In many cases -- particularly for more complex jobs -- the understudy will also 
 
 
 
-Appendix 1: Style nots
+Appendix 1: Style note
 -----------
 
 This section is going to be a bit subjective, and is not intended to be enforced as 'rules'.  It's a set of style considerations to consider when you are designing new code structures.  
 
 
-House Python Style
+Python Style
 =================
 
-First and foremost, think about how Python wants to be written.  Simplicity and readability are key values in python code.  There's a reason a lot of core Python developers use the word 'beautiful' a lot when talking about programming.
+First and foremost, think about **how Python wants to be written**.  Simplicity and readability are key values in python code.  There's a reason a lot of core Python developers use the word 'beautiful' a lot when talking about programming.  Making good use of common Python idioms will make your code easier to read and maintain for everybody on the team.
 
-Unfortunately, since most of of our python is written inside of Maya we are often writing agains an API  that is neither very simple nor very readable. Everybody who works with Maya has had to write countless variations on `cmds.getAttr(object_name + '.property')` or `cmds.editDisplayLayerMembers( 'displayLayer1', query=True)`.  Neither line is a big deal -- but both impose an incremental tax on your thought process, particularly when you're reading a long, complex piece code where the Maya mechanics are main point. When you first learn Maya the challenge is simply getting things working and that kind of very explicit step-by-step code is part of the learning process. When you're more senior, you will start seeing opportunities to clean up and clarify the chattiness and clutter of the Maya api.
+Unfortunately, since most of of our python is written inside of Maya we are often writing agains an API  that is neither very simple nor very readable. Everybody who works with Maya has had to write countless variations on
+ 
+    cmds.getAttr(object_name + '.property')
 
-> [This talk](https://www.youtube.com/watch?v=wf-BqAjZb8M) is a really good example of the thinking behind this section -- it's from a Python core developer explaining how to 'Pythonify' an api that was written for another language mindset.  It's a natural analogy for how we relate to Maya.
+or 
+
+    cmds.editDisplayLayerMembers( 'displayLayer1', query=True)
+
+Neither of these line is a big deal -- but both impose an incremental tax on your thought process, particularly when you're reading a long, complex piece code where the Maya mechanics are main point. When you first learn Maya the challenge is simply getting things working and that kind of very explicit step-by-step code is part of the learning process. When you're more senior, you will start seeing opportunities to clean up and clarify the chattiness and clutter of the Maya API.  
+
+It is a good idea to resist the temptation to write and endless series of wrappers for convenience.  A good simplification is one that expresses your intentions better and offers more tools for working with the problem -- not just one that saves a few characters!   See the discussion of [frameworks](frameworks) above.
+
+[This talk](https://www.youtube.com/watch?v=wf-BqAjZb8M) by Raymond Hettinger is a great example of how you want to approach code simplficiation -- it's an example of a Python core developer explaining how to 'Pythonify' an api that was written for another language mindset.  It's a natural analogy for how we relate to Maya.
 
 ## Tools for simplification
 
+<a id='modules'></a>
 ### Modules
 
 Modules are a vital tool for keeping python code organized.  Keeping related code together in a well-named module allows for a good mix of descriptive names wihout redundancy.  Good modules reduce the need for extremely long function names, and allow for more flexibility in layout
@@ -295,7 +309,151 @@ Python modules are also the right way to handle shared state which in other lang
 
 In general, "singleton" style shared state is something to avoid whenever possible in any case.  Too much shared state makes it too easy for bugs to crop up in untraceable ways.  However when you do need to share information, use the module mechanism as the easy, Pythonic way to maintain shared data.
 
+<a id="basics"></a>
+### Lists, Tuples and Dictionaries -- know the basics
 
+Collections are the heart of Python programming -- they're super useful and reduce a ton of the boring boilerplate common in other languages.
+
+It's important to get good use out of them, which means a couple of basic things:
+
+#### Use idiomatic looping
+
+Use  
+
+    for item in my_list:
+       do_thing(item)
+
+for most loops and 
+
+    for index, value in enumerate(my_list):
+       do_thing(index, item)
+
+if you need the indices.  Don't use `for i in range(len(my_list)))`
+
+For dictionaries, prefer 
+
+    for item in my_dict
+
+for most things, and
+   
+    for item in my_dict.keys()
+
+if you might be adding or removing entries in the loop.
+
+#### Use 'in' for content checks:
+
+Use 
+   
+    if "x" in my_list
+
+and
+
+    if "x" in my_dict
+
+and
+
+    if "x" in my_tuple
+
+
+#### Learn slicing
+
+One of the best tools for writing compact, readable Python is [slice notation](https://medium.com/@adamshort/python-slicing-72f76bb36e31).  It's very useful for a wide variety of tasks -- anything from reversing a list to subsetting it to taking every Nth item can be done concisely with slices.
+
+An extra incentive to learn slicing is [`itertools.islice`](https://docs.python.org/2/library/itertools.html#itertools.islice) which offers the same functionality but as an iterator -- it's an elegant way to express an idea like "take every third item from this list, starting at number 10000 and counting down"  without the expense of creating a new in-mempory copy of the list.  See [Use Generators](generators), below.
+
+#### List comprehension are great -- if comprehensible
+
+Most of the time `my_list = [x for x in range(100) if x %2 ==0]`  is better than a for loop.  However if you're finding it hard to fit a comprehension onto a single like it's probably too complex and ought to revert to being a loop.
+
+
+#### Prefer tuples to lists if you can
+
+Tuples are slightly faster than lists, and they have less overhead if you don't expect their contents to change.  Whenever you're simply answering a question like "what are the objects in this Maya scene using this shader" -- it's better to return a tuple instead of a list, since it's the correct answer now and user's can't accidentally change it.  There's no way to, say, try to change a tuple while loopong over it.
+
+Tuples are also faster to create as literals.  List initializers are fast:
+
+    data = ['a', 'b', 'c']
+
+but tuple literals are faster (note, btw that it's the _commas_, not the parens, which define a tuple) 
+
+    tuple = 'a', 'b', 'c'
+
+So tuples are a natural fit for constants lookups or other data you don't expect to change at runtime.
+
+Tuples can also be used as keys in a dictionary, where lists cannot.  So you could for example represent something like a chessboard as dictionary using tuples as keys:
+
+    Chessboard = {(0,0): 'Rook', (0,1), 'Pawn', ... }
+
+This is much more efficient than having an actual nested 2-d array to represent the board.
+
+#### Prefer namedtuples to tuples for structured data
+
+[`collections.namedtuple`](https://pymotw.com/2/collections/namedtuple.html)offers an excellent alternative to dictionaries and custom classes for structured data.  It's far better to write
+
+    if person.age > 21
+
+than 
+
+     if person[7] > 21
+
+ namedtuples make for more readable code with very little work.  They are also cheaper than dictionaries and -- being immutable, like tuples -- they are less prone to accidental mutations.
+
+#### Dictionary idioms
+
+Dictionaries are one of Python's best features -- an excellent way to handle information flexibly. Using them idiomatically is a key to good Python style:
+
+* Don't forget about dictionary comprehensions:  {k: v  for k, v in zip(keys, values)}
+* Check for inclusion with `if value in my_dict`.
+* Loop over the keys and vales together with `for key, value in my_dict.items()` (or `.iteritems()` to save memory).
+* Use `my_dict.get(key, fallback_value)` rather than checking to see if a key already exists.  Use `my_dict.setdefault(key, value)` to do the same thing _and_ to ensure that the key is present in future.
+* Remove dictionary keys and values with `del my_dict[key]`, but get-and-remove in one operation with `my_dict.pop(key)`  using `del` makes it clear that you intend to remove a key
+* Use [`collections.defaultdict`](https://docs.python.org/2/library/collections.html#collections.defaultdict) if you have to do a lot of checking to see if a dictionary already has what you need instead of hand-writing an if-check.  
+
+Dictionaries make a very useful alternative to long string of `if - elif - else` comparisons, particularly if you're routing to different code based on some value.  For example if you were tring to choose between  handler functions based on a selector string:
+
+     options = {
+        'a': a_handler,
+        'b': b_handler,
+        'c': c_handler
+     }
+     func = options.get(selector, fallback_handler)
+     func()
+
+is more compact and easier to extend than
+
+    if selector == 'a':
+        a_handler()
+    elif selector == 'b':
+        b_handler()
+    elif selector == 'c':
+        c_handler()
+    else:
+        fallback_handler()
+
+<a id="generators"></a>
+### Use Generators
+
+One of the most important things you can do to improve the speed of your Python is use generators and iterators instead of creating large in memory lists.
+
+These two pieces of code produce the same result:
+    
+    test = 0
+    for n in range( int(40e6)):
+        test += n
+
+and 
+
+    test = 0
+    for n in xrange (int (40e6)):
+        test += n
+
+however the second one is **40% faster** because it does not create a complete list in memory of 40,000,000 integers -- it just processes the numbers one at a time.
+
+Whenever possible, use the [`yield`](https://jeffknupp.com/blog/2013/04/07/improve-your-python-yield-and-generators-explained/) keyword to have your functions generate results that can be iterated over, rather than lists which have to be created in memory.  If the caller needs the entire list, it's easy to turn a generator into a list or a tuple.  But if the caller does not need the whole thing in one go -- if they just want to process items one at a time -- widespread use of generators makes for faster, more memory efficient code.  
+
+It's also easy to [chain generators together to create fast pipeline-style code](https://brett.is/writing/about/generator-pipelines-in-python/) which does filtering or transformations in small, composable pieces.  The helps with both reusability and performance.
+
+<a id="tryblocks"></a>
 ### Try-Except-Finally
 
 `try` and `except` are basic parts of Python.  Their lesser-known sibling `finally` however is a very powerful tool for writing cleaner code.  The basic structure is :
@@ -328,6 +486,7 @@ This looks OK -- the code correctly handles a case where, say, 'filename' is wri
 
 In this version, `output` will be properly closed no matter what else happens.  In Maya programming this is often a vital tool for making sure that the scene is restored to a legitimate state if one of your tool operations goes awry.
 
+<a id="contexts"></a>
 ### Context managers
 
 A variant on the same theme is the context manager: the Python construct that start with `with`.  A context manager is an excellent way package up work that has a defined beginning, middle and end in a readable, but also safe way.
@@ -398,6 +557,8 @@ Formally you could do the same work in `try-except-finally` structure and be gua
 
 You may note that `with` blocks have a generic similarity to `try-except-finally` constructs.  Generally the former are best for things you have to do a lot, like namespaces and the latter are the fallback for one-offs.
 
+
+<a id="closures"></a>
 ### Closures
 
 Python [closures](https://www.programiz.com/python-programming/closure) are a very important tool for sharing data without the need for elaborate class structures.  The rules have some interesting subtleties, but basically they boil down to this:
@@ -469,90 +630,9 @@ Here, the closure allows the increment and decrement buttons to know which field
 
 Closures are particularly attractive because they are space efficient -- however you do need to avoid going too deep, or your readers may not be able to figure out where your variable names are coming from. If you are inheriting a variable several screens away from where it originates, at least leave a comment indicating where the name comes from. The `ALLCAPS` convention for module-level constants is also a good way to remind readers when they may be seeing a closure variable.
 
-### lists, tuples and dictionaries
-
-Collections are the heart of Python programming -- they're super useful and reduce a ton of the boring boilerplate common in other languages.
-
-It's important to get good use out of them, which means a couple of basic things:
-
-#### Use idiomatic looping
-
- `for item in my_list: `  for most loops and `for index, value in enumerate(my_list)` if you need the indices, not `for i in range(len(my_list))):`
-
-For dictionaries, prefer `for item in my_dict` for most things, and `for item in my_dict.keys()` if you might be adding or removing entries in the loop.
-
-#### List comprehension are great -- if comprehensible
-
-Most of the time `my_list = [x for x in range(100) if x %2 ==0]`  is better than a for loop.  However if you're finding it hard to fit a comprehension onto a single like it's probably too complex and ought to revert to being a loop.
-
-#### Prefer tuples to lists if you can
-
-Tuples are slightly faster than lists, and they have less overhead if you don't expect their contents to change.  Whenever you're simply answering a question like "what are the objects in this Maya scene using this shader" -- it's better to return a tuple instead of a list, since it's the correct answer now and user's can't accidentally change it.  There's no way to, say, try to change a tuple while loopong over it.
-
-Tuples are also faster to create as literals.  List initializers are fast:
-
-    data = ['a', 'b', 'c']
-
-but tuple literals are faster:
-
-    tuple = 'a', 'b', 'c'
-
-(Note that it's the _commas_, not the parens, which define a tuple)
-
-So for kind of constant tuples are better
-
-Tuples can also be used as keys in a dictionary, where lists cannot.  So you could for example represent something like a chessboard as dictionary using tuples as keys:
-
-    Chessboard = {(0,0): 'Rook', (0,1), 'Pawn', ... }
-
-This is much more efficient than having an actual nested 2-d array to represent the board.
-
-#### Prefer namedtuples to tuples for structured data
-
-`(collections.namedtuple)[https://pymotw.com/2/collections/namedtuple.html]` offers an excellent alternative to dictionaries and custom classes for structured data.  It's far better to write
-
-    if person.age > 21:
-
-than 
-
-     if person[7] > 21
-
- namedtuples make for more readable code with very little work.  They are also cheaper than dictionaries and -- being immutable, like tuples -- they are less prone to accidental mutations.
-
-#### Dictionary idioms
-
-Dictionaries are one of Python's best features -- an excellent way to handle information flexibly. Using them idiomatically is a key to good Python style:
-
-* Don't forget about dictionary comprehensions:  {k: v  for k, v in zip(keys, values)}
-* Check for inclusion with `if value in my_dict`.
-* Loop over the keys and vales together with `for key, value in my_dict.items()` (or `.iteritems()` to save memory).
-* Use `my_dict.get(key, fallback_value)` rather than checking to see if a key already exists.  Use `my_dict.setdefault(key, value)` to do the same thing _and_ to ensure that the key is present in future.
-* Remove dictionary keys and values with `del my_dict[key]`, but get-and-remove in one operation with `my_dict.pop(key)`  using `del` makes it clear that you intend to remove a key
-* Use `[collections.defaultdict](https://docs.python.org/2/library/collections.html#collections.defaultdict)` if you have to do a lot of checking to see if a dictionary already has what you need instead of hand-writing an if-check.  
-
-Dictionaries make a very useful alternative to long string of `if - elif - else` comparisons, particularly if you're routing to different code based on some value.  For example if you were tring to choose between  handler functions based on a selector string:
-
-     options = {
-        'a': a_handler,
-        'b': b_handler,
-        'c': c_handler
-     }
-     func = options.get(selector, fallback_handler)
-     func()
-
-is more compact and easier to extend than
-
-    if selector == 'a':
-        a_handler()
-    elif selector == 'b':
-        b_handler()
-    elif selector == 'c':
-        c_handler()
-    else:
-        fallback_handler()
 
 
-### decorators
+### Decorators
 
 Python decorators are a powerful tool for making simpler code. A decorator is basically just a way of wrapping a ordinary function to add some additional functionality.  For a toy example:
 
@@ -582,7 +662,7 @@ Decorators are a very powerful tool for enforcing consistency across functions w
 
 The one thing to remember about decorators is that they shouldn't interfere with readability:  a decorator that automatically right-slashes file names won't surprise readers, but one which causes a function that looks like it returns string to return numbers instead will generate a lot of confusion.
 
-# The proper uses of magic
+## Afterword: The proper uses of magic
 
 Python has a high magic quotient; you can change a lot about the behavior of basic Python entities, allowing you to customize many aspects of how your code looks and acts.  In the right circumstances this is a very powerful tool: you can write code that more clearly and concisely expresses its intent if you know how to use advanced techniques.  However, this is a power that should be used _sparingly_: it's very easy for a system to become so sophisticated that  it's incomprehensible to any one except the author -- or, sometimes, _including_ the author once a few months have passed.
 
