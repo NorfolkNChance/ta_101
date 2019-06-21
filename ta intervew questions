@@ -1,0 +1,187 @@
+
+# Warmup question 
+What does your “Pokemon radar” look like?
+
+Art
+Problem Solving
+Tool building
+People Skills
+Resilience / Grit
+
+> This is a good icebreaker, it's interesting to see self-assessment on these things. Encourage candidates to explain while they are drawing on the whiteboard.
+
+
+-----
+
+#  Houdini / Procedural tools
+
+### What’s the value proposition in procedural tools?   
+I think TA’s all get it because it’s just so inherently cool. But I’ll have to go back to the boss and ask for lots of money to outfit the studio and build out the role.  What am I going to say to justify that?
+> Looking for insight into how c. thinks about where they fit in -- is this a force multiplier? A content tool that is owned by a super-specialized artist? A fix for weaknesses in existing pipelines?  This Q Could easily be extended to a 2-year horizon plan for what we build, in what order, and what deliverables we promise.
+
+### What do you think are the limits of proceduralism?  Where is it appropriate and where does it fall off the rails?
+> Open ended, is what it says -- look for detailed answers/anecdotes, not generalities
+
+### What have you done in the past to help ease artists into using procedural tools they might find scary or offputting?
+> Try to focus on actual stories, not theories.  Subtext here is how much focus there is on empowerment vs “dumb artists…”
+
+### How do you avoid Diablo III syndrome with procedural tools?  The feeling that everything is fine but just variations on things you’ve already seen?
+> Might need different example if c. has not seen Diablo.  The point it to distinguish between ‘formal’ variety and variety of experience
+
+### We already have a procedural foliage tool in Unreal -- why would we want to create a biome system in another tool?
+> Low level answer is fairly easy; the Unreal version is just a glorified RNG.  But the high level question is really interesting. Does candidate believe in really deep proceduralism, or in RNG stuff? Do they see the difference? Are they up on, say, the difference between an expansion grammar / L-system and a lot of random numbers? Do they focus on pure speed and power? Ie, how easy it is to change your mind? How much to they value flexibility over procedural control. Are there clues to whether they see their job as living _inside_ or _outside_ the game?
+
+### When do we say it’s time to ‘bake’ the procedural content? Is there ever a point where it become ‘done’ and should be left for hand tweaks? Or should it stay procedural forever?
+> Bold is good-- even post-ship is fine provided c. speaks to the importance of and can elaborate on a plausible pipeline and qa process. Too much restraint will yield far fewer benefits of a procedural workflow, we really need something that we can iterate with. Are there tech constraints here we need to learn?  
+
+#### Say you are making a procedural river... 
+One approach is to specify a start point, an end point, and hit "randomize" until you get a river you like. It takes seconds to get a good looking river, but the control is largely out of the hands of the users. Another design for the same system calls for the user to input start point, end point, valley depth, river speed, landmark avoidance points, and about 40 other parameters. Many of these properties the users may not even bother changing the default value.
+At what point does the river essentially stop being procedural? Where do you draw the line between ease of use and user control?
+> Where does c.’s instinct lie on the spectrum between speed and power?  
+> Do they have / express a philosophy about how to spot good tweaks vs ones that dont’ pay?
+> Do they trust end users?
+
+#### What are the pros and cons of monolithic vs. compartmentalized world generation pipelines? 
+Where on that spectrum does an ideal solution fall for a game supporting many maps with few world artists?
+> To some degree this is a ‘save’ question to elicit a philosophical statement if we did not get one out of the river question….
+> c. considers highly-iterative workflows, knows they fall closer to the microservices end of the spectrum (i.e. avoids lengthy "all-in" bakes)
+> c. touches on the ability to modify and test components of the pipeline independently
+> c. recognizes monolithic may be easier with fewer moving parts and may provide a better pure generation result but also recognizes intervention and iteration (on the result, not just inputs) by artists/design is necessary to craft a world that supports gameplay
+
+
+----
+# Social & Production Dynamics
+
+#### Describe your ideal workweek as a technical artist. 
+How do you prioritize your work for any given week? What balance of tasks do you prefer
+> Is C. a deep-tech person or a customer-first person? Do they like working on big picture things or making lots of small impacts?
+
+#### Do you utilize any strategies for tracking your own work?
+> Is C. "all adult here?"  Do they expect to be handheld?
+
+#### What kind of review process do you prefer for techart projects?
+> Is C. used to lone-wolfing?  Do they enjoy evangelizing for their work?
+> If pressed, add “do you do/like code reviews? Do you like to do a spec or writeup before a project” -- we’d like them to volunteer, but we can prompt.  Familiarity of the concept of a design review is invaluable, but don’t call it out for them
+
+
+#### What do you think about hiring tech artists right out of school?
+> Is this somebody who came up through the ranks, or a technology-first person?
+> How much do they value user perspective vs tech skills?
+> Are they looking for intern level people to do their grunt work (if so, probably a red flag!)
+
+
+#### What’s your best experience working with end users? Your worst?
+> What kind of anecdotes do they reach for -- is this showcasing their tech or their production savvy or their relationship skills? Do they seem to like or dislike users in the abstract?
+
+
+---- 
+# Tools/Product Development
+How do you go about designing a new artist-facing product that solves a workflow problem? 
+	Does the candidate:
+ Include the users (and engineering if necessary) early on in the design process? 
+Ask questions about the reported problems to make sure they get to the real underlying issue before getting into solution space.
+Consider designing and implementing a minimum viable product (MVP) for feedback as early as possible to make sure they’re headed in the right direction?
+Implement UX practices around user testing and validation to prove the design is good and meets user needs.
+
+
+
+Situation: An artist calls you over to their machine. Their Maya is crashing everytime they try to export a file. How do you help them resolve the crash?
+What is the candidate’s bed-side demeanor like? 
+What questions do they ask the artist?
+How much time do they spend with the artist? How quickly do they resort to debugging on their own machine?
+What debugging techniques do they use to identify a python/c++ crash?
+
+Situation: You built an incredible procedural shader that lets artists apply tiling red brick with no repeats across an unlimited length of wall. You’re extremely satisfied with the results and the art director signs off on it. 
+Option A: A week later, a production artist comes to you and is trying to use the material but wants this one cool crack to be exactly on the corner of the building and not in the middle of the wall. They insist the shader is useless if they can’t control where the crack lines fall. How do you resolve this situation?
+Argues with the artist and insists there’s nothing they can do to change it.
+Defers to the art director who signed off on it and explain that it would be too hard to change now.
+Unable to come to an assessment without understanding the specific constraints of the problem space. Asks more questions.
+Comes up with an out-of-the-box solution to solve the issue. (i.e. Builds an additional positional overlay texture for placing cracks in UV space; Teaches artists place normal-mapped decals to control where cracks show up.)
+
+
+Option B: A few months pass and the procedural shader is in use across thousands of buildings. Production artists worship it because of how much time you saved them. Unfortunately, QA identified with some bugs with it during a playtest. Whenever the player’s flashlight shines on it, the bricks become fully black. How do you resolve this issue without breaking the thousands of instances already in use?
+Looking for some understanding that the problem will be hard to solve given how many places the shader is used.
+Dissects whether the problem is with the shader, or the flashlight, or some other interaction.
+
+
+Situation: For the last two months, you’ve noticed an extremely irritating visual bug (a skip in an animation, or a buggy water shader, or low resolution textures on some asset) that appears in every build, but no one else seems to be noticing it, but it bothers you terribly. You believe you know what you need to do to resolve this bug and don’t need anyone else’s help. How do you proceed?
+Looking for how the candidate acts in a situation that is unlikely to go noticed by others. Possibly detection how perfectionist they are.
+Does the problem even warrant a fix if no one is saying anything?
+Do they defer to a higher manager/production body to decide if the issue should be fixed?
+Do they elevate the issue to QA or production so that a formal process surrounds the fix?
+Do they review their solution with anyone else?
+Do they “go rogue” and solve the problem without telling anyone? If so, could do a follow-up that says the change has introduced a different bug that everyone is complaining about now.
+
+
+
+-----------
+# Maya Programming
+
+> Note, this covers topics that we now are covering in tests, so it's a bit light.
+
+### Design three Maya python interview questions, ranging from basic to advanced.  
+What would you think of as beginner, intermediate and advanced Maya knowledge?
+What python style issues would you see as distinguishing candidates at these levels?
+For each level, what would you regard as a fail even if the code in question actually did what you asked,
+
+> What does c. think is “advanced”?
+> Do they have style hangups?
+> Do they have experience reading other people’s code
+> Do they seem to have a good grasp of the range
+
+
+### When do you think it's appropriate to bring out Maya C++? 
+> Is c. hung up on looking cool with C++?
+> How much do they value dev speed vs. perf
+
+------
+# Linear Algebra
+
+> Some of these questions are really also covered by the Maya Python tests. Most people don't do a great job on this section, it would be nice to figure out a way to "test" these outside of the interview session.
+
+> This section is informational only - stress that.  There are no ‘fail questions’. These should be in roughly ascending order of difficulty
+
+
+### What is  [.8, 0, .2] dot [1, 0, 0] going to work out to?
+> .8  -- it's a basic dot product
+
+### How about [1,0,0] X [0,1,0] ?
+> [0,0,1] OR [0,0,-1] depending on winding.  This one is super easy, any other numbers would be hard because most people can't do cross products in their heads.  But if you know what a cross is you should recognize that we're deriving the Z from an X-Y plane.
+
+### Here’s a matrix
+
+<table>
+<tr><td>.707</td><td>0</td><td>-.707</td><td>0</td>
+<tr><td>0</td><td>1</td><td>0</td><td>0</td>
+<tr><td>.707</td><td>0</td><td>.707</td><td>0</td>
+<tr><td>1</td><td>2</td><td>3</td><td>1</td>
+</table>
+
+What does it roughly describe?
+> Does the candidate recognize it’s a 4x4 transform matrix?
+> Do they catch the translation component?
+> Do they see that it’s rotated 45 degrees in Y? 
+> Bonus points - do they recognize that it’s slightly less than 100% scale because of the simplification?
+
+
+### What do I get if multiply [1,0,0] * this matrix?
+A vector,  [.707, 0 , -.707]
+> Did the candidate catch that it’s a 3-vector, not a 4?
+	
+### How about [1,0,0,1] * the matrix?
+> A point [1.707, 2, 2.292, 1].  This is the inverse of above. Technically this is a 4 vector
+
+### What happens if I change that first .707 to 707 instead?
+> That adds a huge skew in X. The matrix is no longer orthogonal
+
+### Here’s a quaternion :  [0, .707, 0 , .707].  Do you know roughly what it means?  
+> It’s a 90 degree rotation in Y -- recognizing the Y rotation is important 
+> Did they ask if it’s WXYZ or XYZW?  Bonus points
+> Don’t worry about the 90, the math is hard to do in ones head
+
+### What does this grid of numbers represent?
+1/16 | 1/8 | 1/16
+1/8 | 1/4 |  1/8
+1/16 |  1/8 |  1/16
+
+> It’s 3x3 blur kernel. Bonus points for noticing it’s a gaussian
