@@ -1,4 +1,4 @@
-# Testing 101
+h1. Testing 101
 
 Unit tests are a key way to stay sane in Python land.  The flexibility and speed of Python make it fun.  They also make it hard to be sure you have not broken things by accident.  Since we don't get compile-time guarantees about the quality of our code, it's important to embrace testing as a way to guarantee that things are behaving as we expect from one revision to the next.
 
@@ -254,6 +254,18 @@ This is not a very fancy test but it guarantees that `my_function` actually exis
 The corollary to this is that you should **remove tests that are no longer needed** -- if you deliberately delete `my_function` your should also remove `test_my_function_exists`.
 
 It's possible to turn off tests individually when you're working.  However it's not a good idea.  You should never knowingly check in code with broken tests -- either fix the code (better) or remove the test if the test is no longer predicting the behavior of the code correctly.
+
+# What to test
+
+The goal of a unit test is to test **small, identifiable** aspects of a system. It's _not_ to test an entire system at once.  
+
+Test guru's frequently talk about a "testing pyramid".  The base of the pyramid is unit tests, which guarantee the stability of components used by larger system.  This consitutes two thirds to three quarters of the test coverage for a sytem.  The middle of the pyramid is "API" or "integration" tests -- tests that guarantee the pieces come together correctly and that the entire environment actually functions.  In our universe, this is handled primarily by the build server's compilation tests, which help ensure that modules actually exist, are importable, and don't include syntax errors.  The tip of the pyramid is "system" testing, which is driven by actual users.  In our terms, that's opening Maya or Launchpad and seeing it work as expected. 
+
+![](https://dzone.com/storage/temp/6496415-testingpyramid.png)
+
+The takeaway is that unit tests are not the place where you try to guarantee a particular user experience. The rule of thumb is that unit tests **test the building blocks, not the building**. Library and framework code that is used extensively by other code should be heavily tested -- both because this guarantees reliability in the field and because subtle changes can be interpreted differently by the many other tools that consume this code.  The flip side of this is that user-facing tools -- especially UI -- don't usually work well for unit tests.  They need human attention. 
+
+So, unit tests are vital for library code that is designed to do discreet jobs in a reliable way.  For example a module that creates an octree is an ideal candidate for tests, because it's got a single, well-defined tasks and can easily be tested in isolation.   On the other hand a tool which involves user interaction and then performs a lot of complex operations on a Maya scene is extremely hard to test: a successful 'run' of the tool requires many conditions, from the state of the file to the intent of the user, which are hard to simulate in a test environment.  Unit tests contribute to the stability of tools like this indirectly, by making sure that the smaller bits of code which the tool relies on are depenable -- but they don't guarantee that a particular button does what you think it does.
 
 
 # Advanded testing topics
